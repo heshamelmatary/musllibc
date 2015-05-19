@@ -39,6 +39,14 @@ ifeq (${CONFIG_ARCH_ARM},y)
 	ASMSUBARCH =
 endif
 
+ifeq (${CONFIG_ARCH_RISCV},y)
+	ARCH = riscv
+	CFLAGS += -m32
+	ASFLAGS += -Wa,-m32
+	SUBARCH =
+	ASMSUBARCH =
+endif
+
 ifeq (${CONFIG_LINK_TIME_OPTIMISATIONS},y)
 	CFLAGS += -flto
 endif
