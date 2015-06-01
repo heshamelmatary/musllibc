@@ -1,4 +1,4 @@
-.global __syscall
+/*.global __syscall
 .type   __syscall,@function
 __syscall:
   lw	a0, 0(sp)
@@ -11,3 +11,16 @@ __syscall:
   lw	a7, 28(sp)
 	ecall 
   eret
+*/
+
+.global __syscall
+.type __syscall,%function
+__syscall:
+  la  t0, 1f
+  lw t1, 0(t0)
+  add t0, t0, t1
+  lw  t0, 0(t0)
+  jr  t0
+
+.hidden __sysinfo
+1:  .word __sysinfo-1b
