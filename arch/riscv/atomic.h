@@ -24,14 +24,37 @@ static inline int a_ctz_64(uint64_t x)
 
 static inline int a_cas(volatile int *p, int t, int s)
 {
+ 
+  /* FIXME: Temporary cas emulation */
+  if(*p == t)
+  {
+    *p = s;
+    return t;
+  }
+
+  return s;
+  
   /* TODO */
-        return 0;
+  /*
+ a0 holds address of memory location
+ a1 holds expected value
+ a2 holds desired value
+ v0 return value, 0 if successful, !0 otherwise
+  */
+/*
+__asm__ __volatile__("\
+  lr.w v1, a0; \
+  li v0, 1; \
+  bne v1, a1, return; \
+  sc.w v0, a2, a0; \
+  mov a0, a2; \
+  return: \
+  jr ra;");*/
 }
 
 static inline void *a_cas_p(volatile void *p, void *t, void *s)
 {
-	//return (void *)a_cas(p, (int)t, (int)s);
-	return 0;
+	return (void *)a_cas(p, (int)t, (int)s);
 }
 
 static inline int a_swap(volatile int *x, int v)
