@@ -192,7 +192,7 @@ static int wprintf_core(FILE *f, const wchar_t *fmt, va_list *ap, union arg *nl_
 
 		/* Handle literal text and %% format specifiers */
 		for (a=s; *s && *s!='%'; s++);
-		litpct = wcsspn(s, L"%")/2; /* Optimize %%%% runs */
+		litpct = wcsspn(s, "%")/2; /* Optimize %%%% runs */
 		z = s+litpct;
 		s += 2*litpct;
 		l = z-a;

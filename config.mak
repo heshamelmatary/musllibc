@@ -45,6 +45,15 @@ ifeq (${CONFIG_ARCH_X86_64},y)
     ASMSUBARCH =
 endif
 
+ifeq (${CONFIG_ARCH_RISCV},y)
+   ARCH = riscv
+   CFLAGS += -m64
+   ASFLAGS += -Wa,-m64
+   SUBARCH =
+   ASMSUBARCH =
+endif
+
+
 ifeq (${CONFIG_LINK_TIME_OPTIMISATIONS},y)
 	CFLAGS += -flto
 endif

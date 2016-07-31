@@ -70,13 +70,16 @@ static struct {
 
 static inline void lock(volatile int *lk)
 {
-	if (libc.threads_minus_1)
+	if (libc.threads_minus_1) {
 		while(a_swap(lk, 1)) __wait(lk, lk+1, 1, 1);
+    }
 }
 
 static inline void unlock(volatile int *lk)
 {
+    printf("lk[0] = %d\n", lk[0]);
 	if (lk[0]) {
+        printf("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n");
 		a_store(lk, 0);
 		if (lk[1]) __wake(lk, 1, 1);
 	}
@@ -91,12 +94,13 @@ static inline void lock_bin(int i)
 
 static inline void unlock_bin(int i)
 {
+    printf("unlock_bin\n");
 	unlock(mal.bins[i].lock);
 }
 
 static int first_set(uint64_t x)
 {
-#if 1
+#if 0 
 	return a_ctz_64(x);
 #else
 	static const char debruijn64[64] = {
@@ -347,6 +351,7 @@ void *malloc(size_t n)
 	struct chunk *c;
 	int i, j;
 
+    printf("malloc called\n");
 	if (adjust_size(&n) < 0) return 0;
 
 	if (n > MMAP_THRESHOLD) {
@@ -379,6 +384,7 @@ void *malloc(size_t n)
 		c = mal.bins[j].head;
 		if (c != BIN_TO_CHUNK(j)) {
 			if (!pretrim(c, n, i, j)) unbin(c, j);
+        printf("unlocking bin\n");
 			unlock_bin(j);
 			break;
 		}
