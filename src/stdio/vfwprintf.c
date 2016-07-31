@@ -194,8 +194,9 @@ static int wprintf_core(FILE *f, const wchar_t *fmt, va_list *ap, union arg *nl_
 
 		/* Handle literal text and %% format specifiers */
 		for (a=s; *s && *s!='%'; s++);
-		for (z=s; s[0]=='%' && s[1]=='%'; z++, s+=2);
-		if (z-a > INT_MAX-cnt) goto overflow;
+		litpct = wcsspn(s, L"%")/2; /* Optimize %%%% runs */
+		z = s+litpct;
+		s += 2*litpct;
 		l = z-a;
 		if (f) out(f, a, l);
 		if (l) continue;
