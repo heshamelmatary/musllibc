@@ -2,9 +2,9 @@ static inline struct pthread *__pthread_self()
 {
 #ifdef __clang__
 	char *tp;
-	__asm__ __volatile__ ("or %0, tp, x0" : "=r" (tp) );
+	__asm__ __volatile__ ("or %0, t1, x0" : "=r" (tp) );
 #else
-	register char *tp __asm__("tp");
+	register char *tp __asm__("t1");
 #endif
 	return (struct pthread *) (tp - sizeof(struct pthread));
 }
