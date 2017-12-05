@@ -3,7 +3,7 @@
 ((union { long long ll; long l[2]; }){ .ll = x }).l[1]
 #define __SYSCALL_LL_O(x) __SYSCALL_LL_E((x))
 
-extern unsigned long long int __sysinfo;
+extern unsigned long __sysinfo;
 
 #define CALL_SYSINFO(n, ...) ((long(*)(long,...))__sysinfo)(n, ##__VA_ARGS__)
 
