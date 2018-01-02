@@ -22,7 +22,7 @@ static inline long a_ctz_64(uint64_t x)
 	return a_ctz_l(y);
 }
 
-static inline int a_cas(volatile long *p, int t, int s)
+static inline int a_cas(volatile int *p, int t, int s)
 {
   /* FIXME: Temporary cas emulation */
   if(*p == t)
@@ -32,7 +32,7 @@ static inline int a_cas(volatile long *p, int t, int s)
   }
 
   return *p;
-  
+
   /* TODO */
   /*
  a0 holds address of memory location
@@ -53,7 +53,14 @@ __asm__ __volatile__("\
 
 static inline void *a_cas_p(volatile void *p, void *t, void *s)
 {
-	return (void *)a_cas(p, (int)t, (int)s);
+  /* FIXME: Temporary cas emulation */
+  if(*((unsigned long *) p) == (unsigned long) t)
+  {
+    *((unsigned long *) p) = (unsigned long) s;
+    return t;
+  }
+
+  return (void *) *((unsigned long *) p);
 }
 
 static inline int a_swap(volatile int *x, int v)
