@@ -18,6 +18,8 @@ includedir = $(prefix)/include
 libdir = $(prefix)/lib
 syslibdir = /lib
 
+ARCH = riscv
+
 SRCS = $(sort $(wildcard ${SOURCE_DIR}/src/*/*.c ${SOURCE_DIR}/arch/$(ARCH)/src/*.c))
 OBJS = $(patsubst ${SOURCE_DIR}/%.c,%.o,$(SRCS))
 LOBJS = $(OBJS:.o=.lo)

@@ -9,7 +9,7 @@ __syscall:
 	lw	a5, 20(sp)
 	lw	a6, 24(sp)
   lw	a7, 28(sp)
-	ecall 
+	ecall
   eret
 */
 
@@ -17,10 +17,19 @@ __syscall:
 .type __syscall,%function
 __syscall:
   la  t0, 1f
-  ld t1, 0(t0)
+#if __riscv_xlen == 32
+  lw t1, 0(t0)
+#else
+/*  ld t1, 0(t0) */
+#endif
   add t0, t0, t1
-  ld  t0, 0(t0)
+#if __riscv_xlen == 32
+  lw  t0, 0(t0)
+#else
+/*  ld  t0, 0(t0) */
+#endif
   jr  t0
+
 
 .hidden __sysinfo
 1:  .word __sysinfo-1b
